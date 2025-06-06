@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Acceso</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="acceso-wrapper">
+    <div id="formsSlider" class="forms-slider">
+      <div class="form-container login">
+        <h2>Iniciar sesión</h2>
+        {% if error_login %}
+          <div class="alert">{{ error_login }}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('acceso') }}">
+          <input type="hidden" name="form_type" value="login">
+          <input type="text" name="usuario" placeholder="Correo Electronico" required><br>
+          <input type="password" name="contrasena" placeholder="Contraseña" required><br>
+          <button type="submit">Entrar</button>
+        </form>
+        <button class="switch-link" onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate aquí</button>
+      </div>
+      <div class="form-container registro">
+        <h2>Registro</h2>
+        {% if error_registro %}
+          <div class="alert">{{ error_registro }}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('acceso') }}">
+          <input type="hidden" name="form_type" value="registro">
+          <input type="email" name="usuario" placeholder="Correo electrónico" required><br>
+          <input type="password" name="contrasena" placeholder="Contraseña" required><br>
+          <button type="submit">Registrarse</button>
+        </form>
+        <button class="switch-link" onclick="mostrarLogin()">¿Ya tienes cuenta? Inicia sesión</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function mostrarRegistro() {
+      document.getElementById('formsSlider').style.transform = 'translateX(-370px)';
+      limpiarErrores();
+    }
+    function mostrarLogin() {
+      document.getElementById('formsSlider').style.transform = 'translateX(0)';
+      limpiarErrores();
+    }
+    function limpiarErrores() {
+      let alertas = document.querySelectorAll('.alert');
+      alertas.forEach(function(alerta) {
+        alerta.style.display = 'none';
+      });
+    }
+    // Mostrar automáticamente el formulario correspondiente si hay error
+    {% if error_registro %}
+      mostrarRegistro();
+    {% endif %}
+  </script>
+</body>
+</html>
